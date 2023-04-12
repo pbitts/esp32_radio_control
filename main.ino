@@ -3,12 +3,12 @@
 const char* ssid = "JosephJokerRadio";
 const char* password = "esqueci_A_Senha";
 
-const int analogOutPin = 25; // Define o pino de saída analógica
+const int VCOPin = 25; 
 
 void setup() {
   Serial.begin(115200);
 
-  pinMode(analogOutPin, OUTPUT); // Define o pino de saída como saída analógica
+  pinMode(VCOPin, OUTPUT); // Define o pino de saída como saída analógica
 
   // Inicializa o WiFi como Access Point
   WiFi.softAP(ssid, password);
@@ -34,22 +34,22 @@ void onHTTPRequest(WiFiClient client) {
   String request = client.readStringUntil('\r');
   client.flush();
 
-  // Analisa a solicitação HTTP em busca do parâmetro "valor"
-  float valor = 0.0;
-  if (request.indexOf("valor=") != -1) {
-    valor = request.substring(request.indexOf("valor=") + 6).toFloat();
+  // Analisa a solicitação HTTP em busca do parâmetro "frequency"
+  float frequency = 0.0;
+  if (request.indexOf("frequency=") != -1) {
+    frequency = request.substring(request.indexOf("frequency=") + 6).toFloat();
   }
 
-  // Converte o valor para a saída analógica
-  int analogValue = map(valor, 87.5, 108.0, 0, 4095);
+  // Converte o frequency para a saída analógica
+  int analog_vco = map(frequency, 87.5, 108.0, 0, 4095);
 
   // Define a saída analógica
-  analogWrite(analogOutPin, analogValue);
+  analogWrite(VCOPin, analog_vco);
 
   // Envia uma resposta HTTP de confirmação para o cliente
   client.println("HTTP/1.1 200 OK");
   client.println("Content-Type: text/plain");
   client.println("Connection: close");
   client.println();
-  client.printf("Valor recebido e enviado para o VCO: %f", valor);
+  client.printf("frequency recebido e enviado para o VCO: %f", frequency);
 }
