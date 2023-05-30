@@ -38,13 +38,75 @@ void loop() {
     if (request.indexOf("frequency=") != -1) {
       frequency = request.substring(request.indexOf("frequency=") + 6).toFloat();
     }
-
-    // Converte o frequency para a saída analógica
-    int analog_vco = map(frequency, 87.5, 108.0, 0, 4095);
-  
-    // Define a saída analógica
-    analogWrite(VCOPin, analog_vco);
-
+    
+  if ( fequency >= 97 && fequency < 99) {
+      float vco_voltage = 1.9; // Tensão desejada em volts
+      int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+      Serial.println("Saída analógica: %f", vco_voltage);
+  }
+  } else if (fequency >= 99 && fequency < 102) {
+      float vco_voltage = 2.0; // Tensão desejada em volts
+      int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+      Serial.println("Saída analógica: %f", vco_voltage);
+  }
+ } else if (fequency >= 102 && fequency < 103) {
+    float vco_voltage = 2.1; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 103 && fequency < 104) {
+    float vco_voltage = 2.2; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 104 && fequency < 105) {
+    float vco_voltage = 2.3; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 105 && fequency < 108) {
+    float vco_voltage = 2.6; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 108 && fequency < 109) {
+    float vco_voltage = 2.7; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 109 && fequency < 110) {
+    float vco_voltage = 2.7; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 110 && fequency < 112) {
+    float vco_voltage = 2.9; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 112 && fequency < 113) {
+    float vco_voltage = 3.0; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 113 && fequency < 115) {
+    float vco_voltage = 3.1; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 115 && fequency < 116) {
+    float vco_voltage = 3.2; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ } else if (fequency >= 116 && fequency < 119) {
+    float vco_voltage = 3.3; // Tensão desejada em volts
+    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
+    Serial.println("Saída analógica: %f", vco_voltage);
+}
+ 
+ analogWrite(VCOPin, analog_vco); // Define a saída analógica para 1 (255 é o valor máximo)
+    
     // Envia uma resposta HTTP para o cliente
     client.println("HTTP/1.1 200 OK");
     client.println("Content-Type: text/html");
