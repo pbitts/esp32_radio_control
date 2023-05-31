@@ -38,59 +38,13 @@ void loop() {
     if (request.indexOf("frequency=") != -1) {
       frequency = request.substring(request.indexOf("frequency=") + 6).toFloat();
     }
-  float vco_voltage = 1.0;
+  float vco_voltage = ( (frequency - 98 )/21 )*1.4 + 1.9;
+  Serial.println("Frequência recebida:");
+  Serial.println(frequency);
+  Serial.println("Voltagem enviada: ");
+  Serial.println(vco_voltage);
    
-  if ( frequency >= 97 && frequency < 99) {
-      float vco_voltage = 1.9; // Tensão desejada em volts
-      int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-  }
-   else if (frequency >= 99 && frequency < 102) {
-      float vco_voltage = 2.0; // Tensão desejada em volts
-      int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-  
- } else if (frequency >= 102 && frequency < 103) {
-    float vco_voltage = 2.1; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 103 && frequency < 104) {
-    float vco_voltage = 2.2; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 104 && frequency < 105) {
-    float vco_voltage = 2.3; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 105 && frequency < 108) {
-    float vco_voltage = 2.6; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 108 && frequency < 109) {
-    float vco_voltage = 2.7; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 109 && frequency < 110) {
-    float vco_voltage = 2.7; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 110 && frequency < 112) {
-    float vco_voltage = 2.9; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 112 && frequency < 113) {
-    float vco_voltage = 3.0; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
- } else if (frequency >= 113 && frequency < 115) {
-    float vco_voltage = 3.1; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 115 && frequency < 116) {
-    float vco_voltage = 3.2; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-
- } else if (frequency >= 116 && frequency < 119) {
-    float vco_voltage = 3.3; // Tensão desejada em volts
-    int analog_vco = map(vco_voltage, 0.0, 3.3, 0, 255); // Mapeia a tensão desejada para o valor do DAC
-}
+ 
 
  
  analogWrite(VCOPin, vco_voltage); // Define a saída analógica para 1 (255 é o valor máximo)
