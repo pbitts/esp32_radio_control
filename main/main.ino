@@ -1,11 +1,44 @@
 #include <WiFi.h>
+#include <WiFiClient.h>
+#include <WebServer.h>
 
 const char* ssid = "JosephJokerRadio";
 const char* password = "esqueci_A_Senha";
 
 const int VCOPin = 25; 
 
-WiFiServer server(80); // Cria um objeto servidor na porta 80
+WebServer server(80); // Cria um objeto servidor na porta 80
+
+void handleRoot() {
+  String html = "<form method='POST' action='/form'>";
+  html += "<input type='number' name='frequencia'>";
+  html += "<input type='submit' value='Enviar'>";
+  html += "</form>";
+
+  server.send(200, "text/html", html);
+}
+
+void handleForm() {
+  if (server.hasArg("frequencia")) {
+    String frequency = server.arg("frequencia");
+    // Faça o que desejar com o número recebido
+    // Exemplo: imprimir no monitor serial
+    Serial.println("Frequencia recebida: " + frequency);
+
+    server.send(200, "text/html", "Frequencia recebida com sucesso!");
+    float frequencia = frequency.toFloat();
+    float vco_voltage = ( (frequencia - 98 )/21 )*1.4 + 1.9;
+      Serial.println("Frequência recebida:");
+      Serial.println(frequencia);
+      Serial.println("Voltagem enviada: ");
+      Serial.println(vco_voltage);
+      analogWrite(VCOPin, map(vco_voltage, 0.0, 3.3, 0, 255));
+   
+  } else {
+    server.send(400, "text/plain", "Erro: número não recebido");
+  }
+}
+
 
 void setup() {
   Serial.begin(115200);
@@ -13,59 +46,21 @@ void setup() {
   pinMode(VCOPin, OUTPUT); // Define o pino de saída como saída analógica
 
   // Configura o WiFi como Access Point
-  WiFi.softAP(ssid, password);
 
-  Serial.println();
-  Serial.println("Access Point configurado:");
-  Serial.println(WiFi.softAPIP());
+  WiFi.softAP(ssid, password);
+  IPAddress myIP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(myIP);
+
+  server.on("/", handleRoot);
+  server.on("/form", HTTP_POST, handleForm);
+
+  server.begin();
 
   // Inicializa o servidor
   server.begin();
 }
 
 void loop() {
-  // Verifica se há clientes conectados
-  WiFiClient client = server.available();
-  if (client) {
-    Serial.println("Nova requisição HTTP recebida.");
-
-    // Lê a solicitação HTTP do cliente
-    String request = client.readStringUntil('\r');
-    client.flush();
-
-    // Analisa a solicitação HTTP em busca do parâmetro "frequency"
-    float frequency = 0.0;
-    if (request.indexOf("frequency=") != -1) {
-      frequency = request.substring(request.indexOf("frequency=") + 6).toFloat();
-    }
-  float vco_voltage = ( (frequency - 98 )/21 )*1.4 + 1.9;
-  Serial.println("Frequência recebida:");
-  Serial.println(frequency);
-  Serial.println("Voltagem enviada: ");
-  Serial.println(vco_voltage);
-   
- 
-
- 
- analogWrite(VCOPin, vco_voltage); // Define a saída analógica para 1 (255 é o valor máximo)
-    
-    // Envia uma resposta HTTP para o cliente
-    client.println("HTTP/1.1 200 OK");
-    client.println("Content-Type: text/html");
-    client.println("Connection: close");
-    client.println();
-    client.println("<!DOCTYPE HTML>");
-    client.println("<html>");
-    client.println("<head><title>ESP32 Access Point</title></head>");
-    client.println("<body>");
-    client.println("<h1>ESP32 Access Point</h1>");
-    client.println("<p>Requisição HTTP recebida!</p>");
-    client.println("</body>");
-    client.println("</html>");
-    // Serial.print("frequencia recebida e enviado para o VCO: %f", frequency);
-
-    // Aguarda um breve intervalo para que a resposta seja enviada ao cliente
-    delay(10);
-    client.stop();
-  }
+  server.handleClient();
 }
